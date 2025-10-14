@@ -1,0 +1,3836 @@
+[
+  {
+    "name": "disputes_listCases",
+    "description": "List dispute cases with filtering options.\n\nThis endpoint allows you to:\n\n- List all dispute cases (no filters)\n\n- List all dispute cases associated with a particular user (filter by user_token)\n\n- List all dispute cases associated with a particular transaction (filter by original_transaction_token)\n\n- Combine multiple filters for precise results\n\nAll filters are optional and can be combined. The endpoint supports field filtering, sorting, and pagination.\n",
+    "service": "disputes",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cases",
+      "parameters": {
+        "query": {
+          "original_transaction_token": {
+            "name": "original_transaction_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "9182fe5c-a41a-4a33-b860-af2a52ceedba"
+            }
+          },
+          "user_token": {
+            "name": "user_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "9182fe5c-a41a-4a33-b860-af2a52ceedba"
+            }
+          },
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30
+            }
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdTime",
+                "-createdTime"
+              ],
+              "default": "createdTime"
+            }
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "original_transaction_token": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "user_token": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 30
+        },
+        "start_index": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "sort_by": {
+          "type": "string",
+          "enum": [
+            "createdTime",
+            "-createdTime"
+          ],
+          "default": "createdTime"
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "start_index": {
+          "type": "integer"
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "DISPUTE"
+                ]
+              },
+              "memo": {
+                "type": "string"
+              },
+              "user_token": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "business_token": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "OPEN",
+                  "OPEN_WITH_ACTION_REQUIRED",
+                  "READY",
+                  "CHARGEBACK_INITIATED",
+                  "CLOSED"
+                ]
+              },
+              "assignee": {
+                "type": "string"
+              },
+              "dispute_details": {
+                "type": "object",
+                "properties": {
+                  "original_transaction_token": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "original_transaction_type": {
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "dispute_amount": {
+                    "type": "number"
+                  },
+                  "dispute_amount_change_reason": {
+                    "type": "string",
+                    "enum": [
+                      "MERCHANT_ISSUED_PARTIAL_REFUND",
+                      "PARTIAL_DISPUTE",
+                      "NOT_AS_DESCRIBED_PARTIAL",
+                      "PARTIAL_SERVICE",
+                      "PRORATED_REFUND",
+                      "NOT_AUTHORIZED_FOR_FULL_AMOUNT"
+                    ]
+                  },
+                  "currency_code": {
+                    "type": "string"
+                  },
+                  "dispute_reason": {
+                    "type": "string",
+                    "enum": [
+                      "NOT_AUTHORIZED_CARD_PRESENT",
+                      "NOT_AUTHORIZED_CARD_ABSENT"
+                    ]
+                  },
+                  "dispute_state": {
+                    "type": "string",
+                    "enum": [
+                      "INITIATED",
+                      "REPRESENTMENT",
+                      "PRE_ARBITRATION",
+                      "ARBITRATION",
+                      "CASE_WON",
+                      "CLOSED",
+                      "NETWORK_REJECTED",
+                      "CASE_LOST",
+                      "WRITTEN_OFF_ISSUER",
+                      "WRITTEN_OFF_PROGRAM"
+                    ]
+                  },
+                  "chargeback_token": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "network": {
+                    "type": "string",
+                    "enum": [
+                      "MASTERCARD",
+                      "VISA",
+                      "PULSE"
+                    ]
+                  },
+                  "network_case_number": {
+                    "type": "string"
+                  },
+                  "card_token": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "fraud_dispute_type_details": {
+                    "type": "object",
+                    "properties": {
+                      "general_fraud_type_dispute_details": {
+                        "type": "object",
+                        "properties": {
+                          "chip_on_card": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "network_failure_response": {
+                    "type": "string"
+                  },
+                  "cardholder_contact_date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "provisional_credit_granted": {
+                    "type": "boolean"
+                  },
+                  "regulation_type": {
+                    "type": "string"
+                  }
+                }
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_modified_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "disputes_createCase",
+    "description": "Create a new fraud dispute case.\n\nThis endpoint allows you to create a new fraud dispute case for a transaction in the Marqeta system. \n\nOnly the following transaction types are disputeable:\n- authorization.clearing\n- pindebit.authorization.clearing\n- 220.10.200\n- pindebit.atm.withdrawal\n- account.funding.authorization.clearing\n- original.credit.authorization.clearing\n- account.funding.auth_plus_capture\n- pindebit.cashback\n- pindebit\n- authorization.clearing.quasi.cash\n- pindebit.quasi.cash\n- authorization.clearing.atm.withdrawal\n\nIf a transaction is submitted that is not disputeable, the system will return an error.\n",
+    "service": "disputes",
+    "scope": "write",
+    "http": {
+      "method": "post",
+      "path": "/v3/cases",
+      "parameters": {},
+      "requestBody": {
+        "contentType": "application/json",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/CasesRequest"
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "DISPUTE"
+          ]
+        },
+        "memo": {
+          "type": "string"
+        },
+        "dispute_details": {
+          "type": "object",
+          "properties": {
+            "original_transaction_token": {
+              "type": "string"
+            },
+            "dispute_amount": {
+              "type": "number",
+              "minimum": 0
+            },
+            "dispute_reason": {
+              "type": "string",
+              "enum": [
+                "NOT_AUTHORIZED_CARD_PRESENT",
+                "NOT_AUTHORIZED_CARD_ABSENT"
+              ]
+            },
+            "fraud_dispute_type_details": {
+              "type": "object",
+              "properties": {
+                "general_fraud_type_dispute_details": {
+                  "type": "object",
+                  "properties": {
+                    "chip_on_card": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            },
+            "cardholder_contact_date": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "original_transaction_token",
+            "dispute_amount",
+            "dispute_reason"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "dispute_details"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "DISPUTE"
+          ]
+        },
+        "memo": {
+          "type": "string"
+        },
+        "user_token": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "business_token": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "OPEN_WITH_ACTION_REQUIRED",
+            "READY",
+            "CHARGEBACK_INITIATED",
+            "CLOSED"
+          ]
+        },
+        "assignee": {
+          "type": "string"
+        },
+        "dispute_details": {
+          "type": "object",
+          "properties": {
+            "original_transaction_token": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "original_transaction_type": {
+              "type": "string",
+              "format": "string"
+            },
+            "dispute_amount": {
+              "type": "number"
+            },
+            "dispute_amount_change_reason": {
+              "type": "string",
+              "enum": [
+                "MERCHANT_ISSUED_PARTIAL_REFUND",
+                "PARTIAL_DISPUTE",
+                "NOT_AS_DESCRIBED_PARTIAL",
+                "PARTIAL_SERVICE",
+                "PRORATED_REFUND",
+                "NOT_AUTHORIZED_FOR_FULL_AMOUNT"
+              ]
+            },
+            "currency_code": {
+              "type": "string"
+            },
+            "dispute_reason": {
+              "type": "string",
+              "enum": [
+                "NOT_AUTHORIZED_CARD_PRESENT",
+                "NOT_AUTHORIZED_CARD_ABSENT"
+              ]
+            },
+            "dispute_state": {
+              "type": "string",
+              "enum": [
+                "INITIATED",
+                "REPRESENTMENT",
+                "PRE_ARBITRATION",
+                "ARBITRATION",
+                "CASE_WON",
+                "CLOSED",
+                "NETWORK_REJECTED",
+                "CASE_LOST",
+                "WRITTEN_OFF_ISSUER",
+                "WRITTEN_OFF_PROGRAM"
+              ]
+            },
+            "chargeback_token": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "network": {
+              "type": "string",
+              "enum": [
+                "MASTERCARD",
+                "VISA",
+                "PULSE"
+              ]
+            },
+            "network_case_number": {
+              "type": "string"
+            },
+            "card_token": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "fraud_dispute_type_details": {
+              "type": "object",
+              "properties": {
+                "general_fraud_type_dispute_details": {
+                  "type": "object",
+                  "properties": {
+                    "chip_on_card": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            },
+            "network_failure_response": {
+              "type": "string"
+            },
+            "cardholder_contact_date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "provisional_credit_granted": {
+              "type": "boolean"
+            },
+            "regulation_type": {
+              "type": "string"
+            }
+          }
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getVelocitycontrols",
+    "description": "List velocity controls",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/velocitycontrols",
+      "parameters": {
+        "query": {
+          "card_product": {
+            "name": "card_product",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the card product.\nEnter the string null to retrieve velocity controls that are not associated with any card product."
+          },
+          "user": {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the user.\nEnter the string null to retrieve velocity controls that are not associated with any user."
+          },
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of velocity control resources to retrieve."
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Sort order index of the first resource in the returned array."
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-lastModifiedTime",
+              "type": "string"
+            },
+            "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "card_product": {
+          "type": "string",
+          "description": "Unique identifier of the card product.\nEnter the string null to retrieve velocity controls that are not associated with any card product."
+        },
+        "user": {
+          "type": "string",
+          "description": "Unique identifier of the user.\nEnter the string null to retrieve velocity controls that are not associated with any user."
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of velocity control resources to retrieve."
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Sort order index of the first resource in the returned array."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-lastModifiedTime",
+          "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "active": {
+                "type": "boolean"
+              },
+              "amount_limit": {
+                "type": "number"
+              },
+              "usage_limit": {
+                "type": "integer"
+              },
+              "velocity_window": {
+                "type": "string"
+              },
+              "currency_code": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_modified_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_postVelocitycontrols",
+    "description": "Create velocity control",
+    "service": "general",
+    "scope": "write",
+    "http": {
+      "method": "post",
+      "path": "/v3/velocitycontrols",
+      "parameters": {},
+      "requestBody": {
+        "contentType": "application/json",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/velocity_control_request"
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "amount_limit": {
+          "type": "number"
+        },
+        "usage_limit": {
+          "type": "integer"
+        },
+        "velocity_window": {
+          "type": "string"
+        },
+        "currency_code": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "amount_limit": {
+          "type": "number"
+        },
+        "usage_limit": {
+          "type": "integer"
+        },
+        "velocity_window": {
+          "type": "string"
+        },
+        "currency_code": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getVelocitycontrolsAccountAccountTokenAvailable",
+    "description": "Retrieve velocity control available balances for an account token",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/velocitycontrols/account/{account_token}/available",
+      "parameters": {
+        "path": {
+          "account_token": {
+            "name": "account_token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Account token"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "account_token": {
+          "type": "string",
+          "description": "Account token"
+        }
+      },
+      "required": [
+        "account_token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "available": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number"
+                  },
+                  "uses": {
+                    "type": "integer"
+                  },
+                  "days_remaining": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getVelocitycontrolsUserUsertokenAvailable",
+    "description": "List user velocity control balances",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/velocitycontrols/user/{user_token}/available",
+      "parameters": {
+        "path": {
+          "user_token": {
+            "name": "user_token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the cardholder."
+          }
+        },
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of available balance resources to retrieve."
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "The sort order index of the first resource in the returned array."
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-lastModifiedTime",
+              "type": "string"
+            },
+            "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "user_token": {
+          "type": "string",
+          "description": "Unique identifier of the cardholder."
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of available balance resources to retrieve."
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "The sort order index of the first resource in the returned array."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-lastModifiedTime",
+          "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+        }
+      },
+      "required": [
+        "user_token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "available": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number"
+                  },
+                  "uses": {
+                    "type": "integer"
+                  },
+                  "days_remaining": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getVelocitycontrolsToken",
+    "description": "Returns a specific velocity control",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/velocitycontrols/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the velocity control resource."
+          }
+        },
+        "query": {
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Unique identifier of the velocity control resource."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "amount_limit": {
+          "type": "number"
+        },
+        "usage_limit": {
+          "type": "integer"
+        },
+        "velocity_window": {
+          "type": "string"
+        },
+        "currency_code": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_putVelocitycontrolsToken",
+    "description": "Update velocity control",
+    "service": "general",
+    "scope": "write",
+    "http": {
+      "method": "put",
+      "path": "/v3/velocitycontrols/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the velocity control resource."
+          }
+        }
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/velocity_control_update_request"
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "amount_limit": {
+          "type": "number"
+        },
+        "usage_limit": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "amount_limit": {
+          "type": "number"
+        },
+        "usage_limit": {
+          "type": "integer"
+        },
+        "velocity_window": {
+          "type": "string"
+        },
+        "currency_code": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_deleteVelocitycontrolsToken",
+    "description": "Sets a specific velocity control to inactive to soft delete it",
+    "service": "general",
+    "scope": "write",
+    "http": {
+      "method": "delete",
+      "path": "/v3/velocitycontrols/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Velocity control token"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Velocity control token"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "amount_limit": {
+          "type": "number"
+        },
+        "usage_limit": {
+          "type": "integer"
+        },
+        "velocity_window": {
+          "type": "string"
+        },
+        "currency_code": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getUsers",
+    "description": "List users",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/users",
+      "parameters": {
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of user resources to retrieve."
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Sort order index of the first resource in the returned array."
+          },
+          "search_type": {
+            "name": "search_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search type."
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-lastModifiedTime",
+              "type": "string"
+            },
+            "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of user resources to retrieve."
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Sort order index of the first resource in the returned array."
+        },
+        "search_type": {
+          "type": "string",
+          "description": "Search type."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-lastModifiedTime",
+          "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_modified_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getUsersAuthClientaccesstokenToken",
+    "description": "Retrieve client access token",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/users/auth/clientaccesstoken/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Client access token."
+          }
+        },
+        "query": {
+          "application_token": {
+            "name": "application_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the application object."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Client access token."
+        },
+        "application_token": {
+          "type": "string",
+          "description": "Unique identifier of the application object."
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getUsersPhonenumberPhonenumber",
+    "description": "Lists all users who match a phone number",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/users/phonenumber/{phone_number}",
+      "parameters": {
+        "path": {
+          "phone_number": {
+            "name": "phone_number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Phone number"
+          }
+        },
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of users to retrieve"
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Start index"
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-lastModifiedTime",
+              "type": "string"
+            },
+            "description": "Sort order"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "phone_number": {
+          "type": "string",
+          "description": "Phone number"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of users to retrieve"
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Start index"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-lastModifiedTime",
+          "description": "Sort order"
+        }
+      },
+      "required": [
+        "phone_number"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_modified_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getUsersParenttokenChildren",
+    "description": "List user child accounts",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/users/{parent_token}/children",
+      "parameters": {
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of user resources to retrieve."
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Sort order index of the first resource in the returned array."
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-lastModifiedTime",
+              "type": "string"
+            },
+            "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+          }
+        },
+        "path": {
+          "parent_token": {
+            "name": "parent_token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the parent account holder."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of user resources to retrieve."
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Sort order index of the first resource in the returned array."
+        },
+        "parent_token": {
+          "type": "string",
+          "description": "Unique identifier of the parent account holder."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-lastModifiedTime",
+          "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+        }
+      },
+      "required": [
+        "parent_token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_modified_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getUsersToken",
+    "description": "Retrieve user",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/users/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the user resource."
+          }
+        },
+        "query": {
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Unique identifier of the user resource."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getUsersTokenNotes",
+    "description": "Lists cardholder notes",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/users/{token}/notes",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User token"
+          }
+        },
+        "query": {
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Start index"
+          },
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of notes to retrieve"
+          },
+          "created_by": {
+            "name": "created_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Created by"
+          },
+          "created_by_user_role": {
+            "name": "created_by_user_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of created by user roles"
+          },
+          "include_private": {
+            "name": "include_private",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Include private notes and private fields in note response"
+          },
+          "search_type": {
+            "name": "search_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search type"
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-lastModifiedTime",
+              "type": "string"
+            },
+            "description": "Sort order"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "User token"
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Start index"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of notes to retrieve"
+        },
+        "created_by": {
+          "type": "string",
+          "description": "Created by"
+        },
+        "created_by_user_role": {
+          "type": "string",
+          "description": "Comma-delimited list of created by user roles"
+        },
+        "include_private": {
+          "type": "boolean",
+          "description": "Include private notes and private fields in note response"
+        },
+        "search_type": {
+          "type": "string",
+          "description": "Search type"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-lastModifiedTime",
+          "description": "Sort order"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getUsersTokenSsn",
+    "description": "Retrieve user identification number",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/users/{token}/ssn",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the user resource."
+          }
+        },
+        "query": {
+          "full_ssn": {
+            "name": "full_ssn",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "To return the full identification number, set to true.\nTo return only the last four digits, set to false."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Unique identifier of the user resource."
+        },
+        "full_ssn": {
+          "type": "boolean",
+          "description": "To return the full identification number, set to true.\nTo return only the last four digits, set to false."
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "ssn": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getTransactions",
+    "description": "List transactions",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/transactions",
+      "parameters": {
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "The number of transactions to retrieve."
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "The sort order index of the first resource in the returned array."
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-user_transaction_time",
+              "enum": [
+                "-created_time",
+                "created_time",
+                "-user_transaction_time",
+                "user_transaction_time"
+              ],
+              "type": "string"
+            },
+            "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+          },
+          "start_date": {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The starting date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the start_date and end_date fields."
+          },
+          "end_date": {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ending date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the end_date and start_date fields."
+          },
+          "type": {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of transaction types to include."
+          },
+          "user_token": {
+            "name": "user_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the user account holder."
+          },
+          "business_token": {
+            "name": "business_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the business account holder."
+          },
+          "acting_user_token": {
+            "name": "acting_user_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the acting user."
+          },
+          "card_token": {
+            "name": "card_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the card."
+          },
+          "account_token": {
+            "name": "account_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Account token"
+          },
+          "state": {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "PENDING,COMPLETION",
+              "type": "string"
+            },
+            "description": "Comma-delimited list of transaction states to display."
+          },
+          "version": {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Specifies the API version for the request."
+          },
+          "verbose": {
+            "name": "verbose",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If true, the query returns additional information for diagnostic purposes."
+          },
+          "start_identifier": {
+            "name": "start_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "description": "Start identifier"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 10,
+          "description": "The number of transactions to retrieve."
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "The sort order index of the first resource in the returned array."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "enum": [
+            "-created_time",
+            "created_time",
+            "-user_transaction_time",
+            "user_transaction_time"
+          ],
+          "default": "-user_transaction_time",
+          "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+        },
+        "start_date": {
+          "type": "string",
+          "description": "The starting date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the start_date and end_date fields."
+        },
+        "end_date": {
+          "type": "string",
+          "description": "The ending date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the end_date and start_date fields."
+        },
+        "type": {
+          "type": "string",
+          "description": "Comma-delimited list of transaction types to include."
+        },
+        "user_token": {
+          "type": "string",
+          "description": "The unique identifier of the user account holder."
+        },
+        "business_token": {
+          "type": "string",
+          "description": "The unique identifier of the business account holder."
+        },
+        "acting_user_token": {
+          "type": "string",
+          "description": "The unique identifier of the acting user."
+        },
+        "card_token": {
+          "type": "string",
+          "description": "The unique identifier of the card."
+        },
+        "account_token": {
+          "type": "string",
+          "description": "Account token"
+        },
+        "state": {
+          "type": "string",
+          "default": "PENDING,COMPLETION",
+          "description": "Comma-delimited list of transaction states to display."
+        },
+        "version": {
+          "type": "string",
+          "description": "Specifies the API version for the request."
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "If true, the query returns additional information for diagnostic purposes."
+        },
+        "start_identifier": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Start identifier"
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number"
+              },
+              "currency_code": {
+                "type": "string"
+              },
+              "user_token": {
+                "type": "string"
+              },
+              "card_token": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "user_transaction_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getTransactionsFundingsourceFundingsourcetoken",
+    "description": "List transactions for a funding account",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/transactions/fundingsource/{funding_source_token}",
+      "parameters": {
+        "path": {
+          "funding_source_token": {
+            "name": "funding_source_token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the funding account."
+          }
+        },
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "The number of transactions to retrieve."
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "The sort order index of the first resource in the returned array."
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-user_transaction_time",
+              "enum": [
+                "-created_time",
+                "created_time",
+                "-user_transaction_time",
+                "user_transaction_time"
+              ],
+              "type": "string"
+            },
+            "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+          },
+          "start_date": {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The starting date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the start_date and end_date fields."
+          },
+          "end_date": {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ending date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the end_date and start_date fields."
+          },
+          "type": {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of transaction types to include."
+          },
+          "polarity": {
+            "name": "polarity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "CREDIT",
+                "DEBIT",
+                "PENDING_CREDIT",
+                "PENDING_DEBIT"
+              ],
+              "type": "string"
+            },
+            "description": "Specifies whether to return credit or debit transactions."
+          },
+          "version": {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Specifies the API version for the request."
+          },
+          "verbose": {
+            "name": "verbose",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If true, the query returns additional information for diagnostic purposes."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "funding_source_token": {
+          "type": "string",
+          "description": "The unique identifier of the funding account."
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 10,
+          "description": "The number of transactions to retrieve."
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "The sort order index of the first resource in the returned array."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "enum": [
+            "-created_time",
+            "created_time",
+            "-user_transaction_time",
+            "user_transaction_time"
+          ],
+          "default": "-user_transaction_time",
+          "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+        },
+        "start_date": {
+          "type": "string",
+          "description": "The starting date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the start_date and end_date fields."
+        },
+        "end_date": {
+          "type": "string",
+          "description": "The ending date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the end_date and start_date fields."
+        },
+        "type": {
+          "type": "string",
+          "description": "Comma-delimited list of transaction types to include."
+        },
+        "polarity": {
+          "type": "string",
+          "enum": [
+            "CREDIT",
+            "DEBIT",
+            "PENDING_CREDIT",
+            "PENDING_DEBIT"
+          ],
+          "description": "Specifies whether to return credit or debit transactions."
+        },
+        "version": {
+          "type": "string",
+          "description": "Specifies the API version for the request."
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "If true, the query returns additional information for diagnostic purposes."
+        }
+      },
+      "required": [
+        "funding_source_token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number"
+              },
+              "currency_code": {
+                "type": "string"
+              },
+              "user_token": {
+                "type": "string"
+              },
+              "card_token": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "user_transaction_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getTransactionsToken",
+    "description": "Retrieve transaction",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/transactions/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the transaction."
+          }
+        },
+        "query": {
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          },
+          "version": {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Specifies the API version for the request."
+          },
+          "verbose": {
+            "name": "verbose",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If true, the query returns additional information for diagnostic purposes."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "The unique identifier of the transaction."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        },
+        "version": {
+          "type": "string",
+          "description": "Specifies the API version for the request."
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "If true, the query returns additional information for diagnostic purposes."
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency_code": {
+          "type": "string"
+        },
+        "user_token": {
+          "type": "string"
+        },
+        "card_token": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user_transaction_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getTransactionsTokenRelated",
+    "description": "List related transactions",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/transactions/{token}/related",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the transaction."
+          }
+        },
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "The number of transactions to retrieve."
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "The sort order index of the first resource in the returned array."
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-user_transaction_time",
+              "enum": [
+                "-created_time",
+                "created_time",
+                "-user_transaction_time",
+                "user_transaction_time"
+              ],
+              "type": "string"
+            },
+            "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+          },
+          "start_date": {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The starting date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the start_date and end_date fields."
+          },
+          "end_date": {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ending date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the end_date and start_date fields."
+          },
+          "type": {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of transaction types to include."
+          },
+          "state": {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "ALL",
+              "type": "string"
+            },
+            "description": "Comma-delimited list of transaction states to display."
+          },
+          "version": {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Specifies the API version for the request."
+          },
+          "verbose": {
+            "name": "verbose",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If true, the query returns additional information for diagnostic purposes."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "The unique identifier of the transaction."
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 10,
+          "description": "The number of transactions to retrieve."
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "The sort order index of the first resource in the returned array."
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (field_1,field_2, and so on).\nLeave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "enum": [
+            "-created_time",
+            "created_time",
+            "-user_transaction_time",
+            "user_transaction_time"
+          ],
+          "default": "-user_transaction_time",
+          "description": "Field on which to sort.\nUse any field in the resource model, or one of the system fields lastModifiedTime or createdTime.\nPrefix the field name with a hyphen (-) to sort in descending order.\nOmit the hyphen to sort in ascending order."
+        },
+        "start_date": {
+          "type": "string",
+          "description": "The starting date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the start_date and end_date fields."
+        },
+        "end_date": {
+          "type": "string",
+          "description": "The ending date (or date-time) of a date range from which to return transactions.\nTo return transactions for a single day, enter the same date in both the end_date and start_date fields."
+        },
+        "type": {
+          "type": "string",
+          "description": "Comma-delimited list of transaction types to include."
+        },
+        "state": {
+          "type": "string",
+          "default": "ALL",
+          "description": "Comma-delimited list of transaction states to display."
+        },
+        "version": {
+          "type": "string",
+          "description": "Specifies the API version for the request."
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "If true, the query returns additional information for diagnostic purposes."
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number"
+              },
+              "currency_code": {
+                "type": "string"
+              },
+              "user_token": {
+                "type": "string"
+              },
+              "card_token": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "user_transaction_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getCards",
+    "description": "Lists cards by the last 4 digits",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cards",
+      "parameters": {
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of cards to retrieve"
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Start index"
+          },
+          "last_four": {
+            "name": "last_four",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Last four digits of card number"
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-lastModifiedTime",
+              "type": "string"
+            },
+            "description": "Sort order"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of cards to retrieve"
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Start index"
+        },
+        "last_four": {
+          "type": "string",
+          "description": "Last four digits of card number"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-lastModifiedTime",
+          "description": "Sort order"
+        }
+      },
+      "required": [
+        "last_four"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "card_product_token": {
+                "type": "string"
+              },
+              "user_token": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_modified_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_postCards",
+    "description": "Creates a card",
+    "service": "general",
+    "scope": "write",
+    "http": {
+      "method": "post",
+      "path": "/v3/cards",
+      "parameters": {
+        "query": {
+          "show_cvv_number": {
+            "name": "show_cvv_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            },
+            "description": "Show CVV"
+          },
+          "show_pan": {
+            "name": "show_pan",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            },
+            "description": "Show PAN"
+          }
+        }
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "required": false,
+        "schema": {
+          "$ref": "#/components/schemas/card_request"
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "show_cvv_number": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show CVV"
+        },
+        "show_pan": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show PAN"
+        },
+        "token": {
+          "type": "string"
+        },
+        "card_product_token": {
+          "type": "string"
+        },
+        "user_token": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "card_product_token": {
+          "type": "string"
+        },
+        "user_token": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getCardsBarcodeBarcode",
+    "description": "Returns a card's metadata",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cards/barcode/{barcode}",
+      "parameters": {
+        "path": {
+          "barcode": {
+            "name": "barcode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Barcode"
+          }
+        },
+        "query": {
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "barcode": {
+          "type": "string",
+          "description": "Barcode"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        }
+      },
+      "required": [
+        "barcode"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "card_product_token": {
+          "type": "string"
+        },
+        "user_token": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_postCardsGetbypan",
+    "description": "Returns user and card tokens for the specified PAN",
+    "service": "general",
+    "scope": "write",
+    "http": {
+      "method": "post",
+      "path": "/v3/cards/getbypan",
+      "parameters": {},
+      "requestBody": {
+        "contentType": "application/json",
+        "required": false,
+        "schema": {
+          "$ref": "#/components/schemas/pan_request"
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "pan": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "user_token": {
+          "type": "string"
+        },
+        "card_token": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getCardsUserToken",
+    "description": "Lists all cards for a specific user",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cards/user/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User token"
+          }
+        },
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of items to retrieve"
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Start index"
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-lastModifiedTime",
+              "type": "string"
+            },
+            "description": "Sort order"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "User token"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of items to retrieve"
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Start index"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-lastModifiedTime",
+          "description": "Sort order"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "card_product_token": {
+                "type": "string"
+              },
+              "user_token": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_modified_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getCardsToken",
+    "description": "Returns a specific card",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cards/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Card token"
+          }
+        },
+        "query": {
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          },
+          "expand": {
+            "name": "expand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Object to expand"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Card token"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        },
+        "expand": {
+          "type": "string",
+          "description": "Object to expand"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "card_product_token": {
+          "type": "string"
+        },
+        "user_token": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_putCardsToken",
+    "description": "Updates a specific card",
+    "service": "general",
+    "scope": "write",
+    "http": {
+      "method": "put",
+      "path": "/v3/cards/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Card token"
+          }
+        }
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "required": false,
+        "schema": {
+          "$ref": "#/components/schemas/card_update_request"
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "card_product_token": {
+          "type": "string"
+        },
+        "user_token": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getCardsTokenShowpan",
+    "description": "Returns a specific card - PAN visible",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cards/{token}/showpan",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Card token"
+          }
+        },
+        "query": {
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          },
+          "show_cvv_number": {
+            "name": "show_cvv_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Card token"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        },
+        "show_cvv_number": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "card_product_token": {
+          "type": "string"
+        },
+        "user_token": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getCardproducts",
+    "description": "Lists all card products",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cardproducts",
+      "parameters": {
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Number of items to retrieve. Count can be between 1 - 10 items."
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Indicates from what row to start returning data."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-createdTime",
+              "type": "string"
+            },
+            "description": "Sort order"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "default": 5,
+          "description": "Number of items to retrieve. Count can be between 1 - 10 items."
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Indicates from what row to start returning data."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-createdTime",
+          "description": "Sort order"
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "active": {
+                "type": "boolean"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_modified_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "end_index": {
+          "type": "integer"
+        },
+        "is_more": {
+          "type": "boolean"
+        },
+        "start_index": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  {
+    "name": "general_getCardproductsToken",
+    "description": "Returns a specific card product",
+    "service": "general",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cardproducts/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Card product token"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Card product token"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+]
