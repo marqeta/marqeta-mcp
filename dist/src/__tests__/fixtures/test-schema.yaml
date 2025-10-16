@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: Test API
+  version: 1.0.0
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        email:
+          type: string
+          format: email
+        age:
+          type: integer
+          minimum: 0
+          maximum: 150
+        isActive:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+          minItems: 0
+          maxItems: 10
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - id
+        - name
+        - email
+    
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        category:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+    
+    Status:
+      type: string
+      enum:
+        - active
+        - inactive
+        - pending
+    
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
