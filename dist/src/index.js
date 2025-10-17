@@ -18,7 +18,9 @@ export class MarqetaMcpServer {
     constructor(deps = {}) {
         this.config = deps.config || this.loadConfig();
         this.validateConfig();
-        this.httpClient = deps.httpClient || new HttpClient(this.config.baseUrl, this.config.username, this.config.password, this.config.programShortCode);
+        this.httpClient = deps.httpClient || new HttpClient(this.config.baseUrl, this.config.username, this.config.password, this.config.programShortCode
+        // Rate limiter will use default config from environment variables
+        );
         this.toolsPath = deps.toolsPath || path.join(__dirname, '..', 'tools.json');
     }
     loadConfig() {
