@@ -485,9 +485,9 @@
     }
   },
   {
-    "name": "general_getVelocitycontrols",
+    "name": "velocitycontrol_getVelocitycontrols",
     "description": "List velocity controls",
-    "service": "general",
+    "service": "velocitycontrol",
     "scope": "read",
     "http": {
       "method": "get",
@@ -644,9 +644,9 @@
     }
   },
   {
-    "name": "general_postVelocitycontrols",
+    "name": "velocitycontrol_postVelocitycontrols",
     "description": "Create velocity control",
-    "service": "general",
+    "service": "velocitycontrol",
     "scope": "write",
     "http": {
       "method": "post",
@@ -714,9 +714,9 @@
     }
   },
   {
-    "name": "general_getVelocitycontrolsAccountAccountTokenAvailable",
+    "name": "velocitycontrol_getVelocitycontrolsAccountAccountTokenAvailable",
     "description": "Retrieve velocity control available balances for an account token",
-    "service": "general",
+    "service": "velocitycontrol",
     "scope": "read",
     "http": {
       "method": "get",
@@ -792,9 +792,9 @@
     }
   },
   {
-    "name": "general_getVelocitycontrolsUserUsertokenAvailable",
+    "name": "velocitycontrol_getVelocitycontrolsUserUsertokenAvailable",
     "description": "List user velocity control balances",
-    "service": "general",
+    "service": "velocitycontrol",
     "scope": "read",
     "http": {
       "method": "get",
@@ -934,9 +934,9 @@
     }
   },
   {
-    "name": "general_getVelocitycontrolsToken",
+    "name": "velocitycontrol_getVelocitycontrolsToken",
     "description": "Returns a specific velocity control",
-    "service": "general",
+    "service": "velocitycontrol",
     "scope": "read",
     "http": {
       "method": "get",
@@ -1016,9 +1016,9 @@
     }
   },
   {
-    "name": "general_putVelocitycontrolsToken",
+    "name": "velocitycontrol_putVelocitycontrolsToken",
     "description": "Update velocity control",
-    "service": "general",
+    "service": "velocitycontrol",
     "scope": "write",
     "http": {
       "method": "put",
@@ -1095,9 +1095,9 @@
     }
   },
   {
-    "name": "general_deleteVelocitycontrolsToken",
+    "name": "velocitycontrol_deleteVelocitycontrolsToken",
     "description": "Sets a specific velocity control to inactive to soft delete it",
-    "service": "general",
+    "service": "velocitycontrol",
     "scope": "write",
     "http": {
       "method": "delete",
@@ -1162,9 +1162,9 @@
     }
   },
   {
-    "name": "general_getUsers",
+    "name": "users_getUsers",
     "description": "List users",
-    "service": "general",
+    "service": "users",
     "scope": "read",
     "http": {
       "method": "get",
@@ -1308,9 +1308,9 @@
     }
   },
   {
-    "name": "general_getUsersAuthClientaccesstokenToken",
+    "name": "users_getUsersAuthClientaccesstokenToken",
     "description": "Retrieve client access token",
-    "service": "general",
+    "service": "users",
     "scope": "read",
     "http": {
       "method": "get",
@@ -1375,9 +1375,9 @@
     }
   },
   {
-    "name": "general_getUsersPhonenumberPhonenumber",
+    "name": "users_getUsersPhonenumberPhonenumber",
     "description": "Lists all users who match a phone number",
-    "service": "general",
+    "service": "users",
     "scope": "read",
     "http": {
       "method": "get",
@@ -1526,9 +1526,9 @@
     }
   },
   {
-    "name": "general_getUsersParenttokenChildren",
+    "name": "users_getUsersParenttokenChildren",
     "description": "List user child accounts",
-    "service": "general",
+    "service": "users",
     "scope": "read",
     "http": {
       "method": "get",
@@ -1677,9 +1677,9 @@
     }
   },
   {
-    "name": "general_getUsersToken",
+    "name": "users_getUsersToken",
     "description": "Retrieve user",
-    "service": "general",
+    "service": "users",
     "scope": "read",
     "http": {
       "method": "get",
@@ -1759,9 +1759,9 @@
     }
   },
   {
-    "name": "general_getUsersTokenNotes",
+    "name": "users_getUsersTokenNotes",
     "description": "Lists cardholder notes",
-    "service": "general",
+    "service": "users",
     "scope": "read",
     "http": {
       "method": "get",
@@ -1946,9 +1946,9 @@
     }
   },
   {
-    "name": "general_getUsersTokenSsn",
+    "name": "users_getUsersTokenSsn",
     "description": "Retrieve user identification number",
-    "service": "general",
+    "service": "users",
     "scope": "read",
     "http": {
       "method": "get",
@@ -2005,9 +2005,9 @@
     }
   },
   {
-    "name": "general_getTransactions",
+    "name": "transactions_getTransactions",
     "description": "List transactions",
-    "service": "general",
+    "service": "transactions",
     "scope": "read",
     "http": {
       "method": "get",
@@ -2313,9 +2313,9 @@
     }
   },
   {
-    "name": "general_getTransactionsFundingsourceFundingsourcetoken",
+    "name": "transactions_getTransactionsFundingsourceFundingsourcetoken",
     "description": "List transactions for a funding account",
-    "service": "general",
+    "service": "transactions",
     "scope": "read",
     "http": {
       "method": "get",
@@ -2569,9 +2569,9 @@
     }
   },
   {
-    "name": "general_getTransactionsToken",
+    "name": "transactions_getTransactionsToken",
     "description": "Retrieve transaction",
-    "service": "general",
+    "service": "transactions",
     "scope": "read",
     "http": {
       "method": "get",
@@ -2680,9 +2680,9 @@
     }
   },
   {
-    "name": "general_getTransactionsTokenRelated",
+    "name": "transactions_getTransactionsTokenRelated",
     "description": "List related transactions",
-    "service": "general",
+    "service": "transactions",
     "scope": "read",
     "http": {
       "method": "get",
@@ -2926,9 +2926,9 @@
     }
   },
   {
-    "name": "general_getCards",
+    "name": "cards_getCards",
     "description": "Lists cards by the last 4 digits",
-    "service": "general",
+    "service": "cards",
     "scope": "read",
     "http": {
       "method": "get",
@@ -3069,9 +3069,9 @@
     }
   },
   {
-    "name": "general_postCards",
+    "name": "cards_postCards",
     "description": "Creates a card",
-    "service": "general",
+    "service": "cards",
     "scope": "write",
     "http": {
       "method": "post",
@@ -3160,9 +3160,9 @@
     }
   },
   {
-    "name": "general_getCardsBarcodeBarcode",
+    "name": "cards_getCardsBarcodeBarcode",
     "description": "Returns a card's metadata",
-    "service": "general",
+    "service": "cards",
     "scope": "read",
     "http": {
       "method": "get",
@@ -3236,9 +3236,9 @@
     }
   },
   {
-    "name": "general_postCardsGetbypan",
+    "name": "cards_postCardsGetbypan",
     "description": "Returns user and card tokens for the specified PAN",
-    "service": "general",
+    "service": "cards",
     "scope": "write",
     "http": {
       "method": "post",
@@ -3274,9 +3274,9 @@
     }
   },
   {
-    "name": "general_getCardsUserToken",
+    "name": "cards_getCardsUserToken",
     "description": "Lists all cards for a specific user",
-    "service": "general",
+    "service": "cards",
     "scope": "read",
     "http": {
       "method": "get",
@@ -3419,9 +3419,9 @@
     }
   },
   {
-    "name": "general_getCardsToken",
+    "name": "cards_getCardsToken",
     "description": "Returns a specific card",
-    "service": "general",
+    "service": "cards",
     "scope": "read",
     "http": {
       "method": "get",
@@ -3508,9 +3508,9 @@
     }
   },
   {
-    "name": "general_putCardsToken",
+    "name": "cards_putCardsToken",
     "description": "Updates a specific card",
-    "service": "general",
+    "service": "cards",
     "scope": "write",
     "http": {
       "method": "put",
@@ -3578,9 +3578,9 @@
     }
   },
   {
-    "name": "general_getCardsTokenShowpan",
+    "name": "cards_getCardsTokenShowpan",
     "description": "Returns a specific card - PAN visible",
-    "service": "general",
+    "service": "cards",
     "scope": "read",
     "http": {
       "method": "get",
@@ -3665,9 +3665,9 @@
     }
   },
   {
-    "name": "general_getCardproducts",
+    "name": "cardproducts_getCardproducts",
     "description": "Lists all card products",
-    "service": "general",
+    "service": "cardproducts",
     "scope": "read",
     "http": {
       "method": "get",
@@ -3776,9 +3776,9 @@
     }
   },
   {
-    "name": "general_getCardproductsToken",
+    "name": "cardproducts_getCardproductsToken",
     "description": "Returns a specific card product",
-    "service": "general",
+    "service": "cardproducts",
     "scope": "read",
     "http": {
       "method": "get",
