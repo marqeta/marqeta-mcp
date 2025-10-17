@@ -135,11 +135,11 @@ jobs:
 
             Install with:
             ```bash
-            npm install @marqeta/mcp-server@${{ steps.version.outputs.new_version }}
+            npm install @marqeta/marqeta-mcp@${{ steps.version.outputs.new_version }}
             ```
 
             ### 🔗 Links
-            - [npm Package](https://www.npmjs.com/package/@marqeta/mcp-server/v/${{ steps.version.outputs.new_version }})
+            - [npm Package](https://www.npmjs.com/package/@marqeta/marqeta-mcp/v/${{ steps.version.outputs.new_version }})
             - [Documentation](https://github.com/marqeta/marqeta-mcp#readme)
           draft: false
           prerelease: false

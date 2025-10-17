@@ -1,5 +1,5 @@
 {
-  "name": "@marqeta/mcp-server",
+  "name": "@marqeta/marqeta-mcp",
   "version": "1.0.0",
   "description": "MCP server with tools generated from OpenAPI specs",
   "main": "dist/src/index.js",
@@ -23,12 +23,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marqeta/mcp-server.git"
+    "url": "git+https://github.com/marqeta/marqeta-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/marqeta/mcp-server/issues"
+    "url": "https://github.com/marqeta/marqeta-mcp/issues"
   },
-  "homepage": "https://github.com/marqeta/mcp-server#readme",
+  "homepage": "https://github.com/marqeta/marqeta-mcp#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
