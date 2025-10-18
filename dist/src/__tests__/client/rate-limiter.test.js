@@ -22,7 +22,7 @@ describe('RateLimiter', () => {
             expect(status.enabled).toBe(true);
             expect(status.config.intervalMs).toBe(500);
             expect(status.config.maxConcurrent).toBe(2);
-            expect(status.config.maxQueueSize).toBe(100);
+            expect(status.config.maxQueueSize).toBe(10);
         });
         it('should use environment variables for configuration', () => {
             process.env.MARQETA_RATE_LIMIT_INTERVAL_MS = '1000';
