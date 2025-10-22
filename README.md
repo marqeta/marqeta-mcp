@@ -4,27 +4,7 @@ This directory contains a pre-built MCP (Model Context Protocol) server ready to
 
 ## How to use marqeta-mcp server
 
-### Recommended Configuration (with Safety Features)
-
-```json
-{
-  "mcpServers": {
-    "marqeta": {
-      "command": "npx",
-      "args": ["-y", "@marqeta/marqeta-mcp"],
-      "env": {
-        "MARQETA_API_URL": "sandbox-api.marqeta.com",
-        "MARQETA_USERNAME": "your-sandbox-username",
-        "MARQETA_PASSWORD": "your-sandbox-password",
-        "MARQETA_PROGRAM_SHORT_CODE": "your-program-code",
-        "MARQETA_SCOPE": "read"
-      }
-    }
-  }
-}
-```
-
-### Production Configuration (Use with Caution)
+### mcp.json Configuration
 
 ```json
 {
@@ -36,7 +16,7 @@ This directory contains a pre-built MCP (Model Context Protocol) server ready to
         "MARQETA_API_URL": "your-api-url.marqeta.com",
         "MARQETA_USERNAME": "your-username",
         "MARQETA_PASSWORD": "your-password",
-        "MARQETA_PROGRAM_SHORT_CODE": "your-program-code"
+        "MARQETA_PROGRAM_SHORT_CODE": "your-program-code" // not required for public sandbox
       }
     }
   }
@@ -58,12 +38,12 @@ This directory contains a pre-built MCP (Model Context Protocol) server ready to
 - `MARQETA_PROGRAM_SHORT_CODE` - Program identifier (adds X-Program-Short-Code header). Skip if you are using Marqeta's public sandbox
 
 ### Optional
-- `MARQETA_SERVICE` - Comma-separated list of services to load (e.g., `users,transactions,disputes`)
+- `MARQETA_SERVICE` - Comma-separated list of services to load (e.g., `users,transactions,disputes,cardtransitions`)
 - `MARQETA_SCOPE` - Filter tools by scope: `read` (GET only) or `all` (default: all)
 
 ## Available Tools
 
-The MCP server provides **30 tools** across 6 service categories. User service and scope filters to load tools targeted for specific operation. Tools are categorized by:
+The MCP server provides **33 tools** across 7 service categories. User service and scope filters to load tools targeted for specific operation. Tools are categorized by:
 - **Service**: The API domain (users, cards, transactions, etc.)
 - **Scope**: Read (GET operations) or Write (POST/PUT/DELETE operations)
 
@@ -72,12 +52,13 @@ The MCP server provides **30 tools** across 6 service categories. User service a
 | Service | Read Tools | Write Tools | Total |
 |---------|------------|-------------|-------|
 | Card Products | 2 | 0 | 2 |
+| Card Transitions | 2 | 1 | 3 |
 | Cards | 5 | 3 | 8 |
 | Disputes | 1 | 1 | 2 |
 | Transactions | 4 | 0 | 4 |
 | Users | 7 | 0 | 7 |
 | Velocity Control | 4 | 3 | 7 |
-| **Total** | **23** | **7** | **30** |
+| **Total** | **25** | **8** | **33** |
 
 ### Card Products Tools
 
@@ -85,6 +66,14 @@ The MCP server provides **30 tools** across 6 service categories. User service a
 |-----------|-------|-------------|
 | `cardproducts_getCardproducts` | Read | Lists all card products |
 | `cardproducts_getCardproductsToken` | Read | Returns a specific card product |
+
+### Card Transitions Tools
+
+| Tool Name | Scope | Description |
+|-----------|-------|-------------|
+| `cardtransitions_getCardtransitionsCardToken` | Read | Lists all card transitions |
+| `cardtransitions_getCardtransitionsToken` | Read | Returns a card transition object |
+| `cardtransitions_postCardtransitions` | Write | Creates a card transition object |
 
 ### Cards Tools
 
@@ -148,7 +137,7 @@ You can filter available tools using environment variables:
 export MARQETA_SCOPE=read
 
 # Load only specific services
-export MARQETA_SERVICE=users,cards,transactions
+export MARQETA_SERVICE=users,cards,transactions,cardtransitions
 ```
 
 ## ⚠️ Important Security and Safety Notes
