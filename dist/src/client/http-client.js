@@ -10,6 +10,7 @@ export class HttpClient {
             baseUrl = `https://${baseUrl}`;
         }
         const headers = {
+            'User-Agent': `mcp-server/${VERSION}`,
             'X-Marqeta-Client': `mcp-server/${VERSION}`,
             'X-Marqeta-Request-Source': 'mcp-request'
         };
