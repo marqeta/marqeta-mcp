@@ -485,6 +485,1246 @@
     }
   },
   {
+    "name": "cardtransitions_postCardtransitions",
+    "description": "Creates a card transition object",
+    "service": "cardtransitions",
+    "scope": "write",
+    "http": {
+      "method": "post",
+      "path": "/v3/cardtransitions",
+      "parameters": {},
+      "requestBody": {
+        "contentType": "application/json",
+        "required": false,
+        "schema": {
+          "$ref": "#/components/schemas/card_transition_request"
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "card_token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "API",
+            "IVR",
+            "FRAUD",
+            "ADMIN",
+            "SYSTEM"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 255
+        },
+        "reason_code": {
+          "type": "string",
+          "enum": [
+            "00",
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "86"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "LIMITED",
+            "SUSPENDED",
+            "TERMINATED"
+          ]
+        },
+        "sync_state_with_dwts": {
+          "type": "boolean"
+        },
+        "token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "validations": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "object",
+              "properties": {
+                "birth_date": {
+                  "type": "string",
+                  "description": "yyyy-MM-dd",
+                  "format": "date-time"
+                },
+                "phone": {
+                  "type": "string",
+                  "description": "Phone #",
+                  "minLength": 0,
+                  "maxLength": 255
+                },
+                "random_name_line1_postfix": {
+                  "type": "string",
+                  "description": "Six-char random name postfix",
+                  "minLength": 6,
+                  "maxLength": 6
+                },
+                "ssn": {
+                  "type": "string",
+                  "description": "Last four digits of SSN",
+                  "minLength": 0,
+                  "maxLength": 255
+                }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "barcode": {
+          "type": "string"
+        },
+        "bulk_issuance_token": {
+          "type": "string"
+        },
+        "card": {
+          "type": "object",
+          "properties": {
+            "metadata": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "card_product_token": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 36
+        },
+        "card_token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "API",
+            "IVR",
+            "FRAUD",
+            "ADMIN",
+            "SYSTEM"
+          ]
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expedite": {
+          "type": "boolean",
+          "default": false
+        },
+        "expiration": {
+          "type": "string"
+        },
+        "expiration_time": {
+          "type": "string"
+        },
+        "fulfillment": {
+          "type": "object",
+          "properties": {
+            "card_fulfillment_reason": {
+              "type": "string",
+              "enum": [
+                "NEW",
+                "LOST_STOLEN",
+                "EXPIRED"
+              ]
+            },
+            "card_personalization": {
+              "type": "object",
+              "description": "Specifies personalized attributes to be added to the card.",
+              "properties": {
+                "carrier": {
+                  "type": "object"
+                },
+                "images": {
+                  "type": "object"
+                },
+                "perso_type": {
+                  "type": "string",
+                  "description": "Specifies the type of card personalization.",
+                  "enum": [
+                    "EMBOSS",
+                    "LASER",
+                    "FLAT"
+                  ]
+                },
+                "text": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            },
+            "shipping": {
+              "type": "object",
+              "properties": {
+                "care_of_line": {
+                  "type": "string",
+                  "description": "255 char max"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "LOCAL_MAIL",
+                    "LOCAL_MAIL_PACKAGE",
+                    "GROUND",
+                    "TWO_DAY",
+                    "OVERNIGHT",
+                    "INTERNATIONAL",
+                    "INTERNATIONAL_PRIORITY",
+                    "LOCAL_PRIORITY",
+                    "FEDEX_EXPEDITED",
+                    "FEDEX_REGULAR",
+                    "UPS_EXPEDITED",
+                    "UPS_REGULAR",
+                    "USPS_EXPEDITED",
+                    "USPS_REGULAR"
+                  ]
+                },
+                "recipient_address": {
+                  "type": "object"
+                },
+                "return_address": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "required": [
+            "card_personalization"
+          ]
+        },
+        "fulfillment_status": {
+          "type": "string",
+          "enum": [
+            "ISSUED",
+            "ORDERED",
+            "REJECTED",
+            "SHIPPED",
+            "DELIVERED",
+            "DIGITALLY_PRESENTED"
+          ]
+        },
+        "last_four": {
+          "type": "string"
+        },
+        "new_pan_from_card_token": {
+          "type": "string"
+        },
+        "pan": {
+          "type": "string"
+        },
+        "pin_is_set": {
+          "type": "boolean",
+          "default": false
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 255
+        },
+        "reason_code": {
+          "type": "string",
+          "enum": [
+            "00",
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "86"
+          ]
+        },
+        "reissue_pan_from_card_token": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "SUSPENDED",
+            "TERMINATED",
+            "UNACTIVATED"
+          ]
+        },
+        "token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "fulfillment.issued",
+            "state.activated",
+            "state.suspended",
+            "state.reinstated",
+            "state.terminated",
+            "state.limited",
+            "fulfillment.ordered",
+            "fulfillment.rejected",
+            "fulfillment.shipped",
+            "fulfillment.delivered",
+            "fulfillment.digitally_presented"
+          ]
+        },
+        "user": {
+          "type": "object",
+          "description": "Contains customer-provided information about the cardholder that performed the transaction.",
+          "properties": {
+            "metadata": {
+              "type": "object",
+              "description": "Associates customer-provided metadata with the cardholder.",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "user_token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "validations": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "object",
+              "properties": {
+                "birth_date": {
+                  "type": "boolean",
+                  "description": "yyyy-MM-dd",
+                  "default": false
+                },
+                "phone": {
+                  "type": "boolean",
+                  "description": "10 char max, phone number",
+                  "default": false
+                },
+                "random_name_line1_postfix": {
+                  "type": "boolean",
+                  "description": "Six-char random name postfix",
+                  "default": false
+                },
+                "ssn": {
+                  "type": "boolean",
+                  "description": "Last four digits of SSN",
+                  "default": false
+                }
+              },
+              "required": [
+                "birth_date",
+                "phone",
+                "random_name_line1_postfix",
+                "ssn"
+              ]
+            }
+          },
+          "required": [
+            "user"
+          ]
+        }
+      },
+      "required": [
+        "barcode",
+        "card_product_token",
+        "card_token",
+        "channel",
+        "expiration",
+        "expiration_time",
+        "fulfillment_status",
+        "last_four",
+        "pan",
+        "pin_is_set",
+        "state",
+        "token",
+        "user_token"
+      ]
+    }
+  },
+  {
+    "name": "cardtransitions_getCardtransitionsCardToken",
+    "description": "Lists all card transitions",
+    "service": "cardtransitions",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cardtransitions/card/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Card token"
+          }
+        },
+        "query": {
+          "count": {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "format": "int32",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "description": "Number of card transitions to retrieve"
+          },
+          "start_index": {
+            "name": "start_index",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "Start index"
+          },
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          },
+          "sort_by": {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "-createdTime",
+              "type": "string"
+            },
+            "description": "Sort order"
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Card token"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "default": 5,
+          "description": "Number of card transitions to retrieve"
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "description": "Start index"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "-createdTime",
+          "description": "Sort order"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "barcode": {
+                "type": "string"
+              },
+              "bulk_issuance_token": {
+                "type": "string"
+              },
+              "card": {
+                "type": "object",
+                "properties": {
+                  "metadata": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "card_product_token": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 36
+              },
+              "card_token": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 36
+              },
+              "channel": {
+                "type": "string",
+                "enum": [
+                  "API",
+                  "IVR",
+                  "FRAUD",
+                  "ADMIN",
+                  "SYSTEM"
+                ]
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "created_timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "expedite": {
+                "type": "boolean",
+                "default": false
+              },
+              "expiration": {
+                "type": "string"
+              },
+              "expiration_time": {
+                "type": "string"
+              },
+              "fulfillment": {
+                "type": "object",
+                "properties": {
+                  "card_fulfillment_reason": {
+                    "type": "string",
+                    "enum": [
+                      "NEW",
+                      "LOST_STOLEN",
+                      "EXPIRED"
+                    ]
+                  },
+                  "card_personalization": {
+                    "type": "object",
+                    "description": "Specifies personalized attributes to be added to the card.",
+                    "properties": {
+                      "carrier": {
+                        "type": "object"
+                      },
+                      "images": {
+                        "type": "object"
+                      },
+                      "perso_type": {
+                        "type": "string",
+                        "description": "Specifies the type of card personalization.",
+                        "enum": [
+                          "EMBOSS",
+                          "LASER",
+                          "FLAT"
+                        ]
+                      },
+                      "text": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "text"
+                    ]
+                  },
+                  "shipping": {
+                    "type": "object",
+                    "properties": {
+                      "care_of_line": {
+                        "type": "string",
+                        "description": "255 char max"
+                      },
+                      "method": {
+                        "type": "string",
+                        "enum": [
+                          "LOCAL_MAIL",
+                          "LOCAL_MAIL_PACKAGE",
+                          "GROUND",
+                          "TWO_DAY",
+                          "OVERNIGHT",
+                          "INTERNATIONAL",
+                          "INTERNATIONAL_PRIORITY",
+                          "LOCAL_PRIORITY",
+                          "FEDEX_EXPEDITED",
+                          "FEDEX_REGULAR",
+                          "UPS_EXPEDITED",
+                          "UPS_REGULAR",
+                          "USPS_EXPEDITED",
+                          "USPS_REGULAR"
+                        ]
+                      },
+                      "recipient_address": {
+                        "type": "object"
+                      },
+                      "return_address": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "card_personalization"
+                ]
+              },
+              "fulfillment_status": {
+                "type": "string",
+                "enum": [
+                  "ISSUED",
+                  "ORDERED",
+                  "REJECTED",
+                  "SHIPPED",
+                  "DELIVERED",
+                  "DIGITALLY_PRESENTED"
+                ]
+              },
+              "last_four": {
+                "type": "string"
+              },
+              "new_pan_from_card_token": {
+                "type": "string"
+              },
+              "pan": {
+                "type": "string"
+              },
+              "pin_is_set": {
+                "type": "boolean",
+                "default": false
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 255
+              },
+              "reason_code": {
+                "type": "string",
+                "enum": [
+                  "00",
+                  "01",
+                  "02",
+                  "03",
+                  "04",
+                  "05",
+                  "06",
+                  "07",
+                  "08",
+                  "09",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14",
+                  "15",
+                  "16",
+                  "17",
+                  "18",
+                  "19",
+                  "20",
+                  "21",
+                  "22",
+                  "23",
+                  "24",
+                  "25",
+                  "26",
+                  "27",
+                  "28",
+                  "29",
+                  "30",
+                  "31",
+                  "32",
+                  "86"
+                ]
+              },
+              "reissue_pan_from_card_token": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "SUSPENDED",
+                  "TERMINATED",
+                  "UNACTIVATED"
+                ]
+              },
+              "token": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 36
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "fulfillment.issued",
+                  "state.activated",
+                  "state.suspended",
+                  "state.reinstated",
+                  "state.terminated",
+                  "state.limited",
+                  "fulfillment.ordered",
+                  "fulfillment.rejected",
+                  "fulfillment.shipped",
+                  "fulfillment.delivered",
+                  "fulfillment.digitally_presented"
+                ]
+              },
+              "user": {
+                "type": "object",
+                "description": "Contains customer-provided information about the cardholder that performed the transaction.",
+                "properties": {
+                  "metadata": {
+                    "type": "object",
+                    "description": "Associates customer-provided metadata with the cardholder.",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "user_token": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 36
+              },
+              "validations": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "birth_date": {
+                        "type": "boolean",
+                        "description": "yyyy-MM-dd",
+                        "default": false
+                      },
+                      "phone": {
+                        "type": "boolean",
+                        "description": "10 char max, phone number",
+                        "default": false
+                      },
+                      "random_name_line1_postfix": {
+                        "type": "boolean",
+                        "description": "Six-char random name postfix",
+                        "default": false
+                      },
+                      "ssn": {
+                        "type": "boolean",
+                        "description": "Last four digits of SSN",
+                        "default": false
+                      }
+                    },
+                    "required": [
+                      "birth_date",
+                      "phone",
+                      "random_name_line1_postfix",
+                      "ssn"
+                    ]
+                  }
+                },
+                "required": [
+                  "user"
+                ]
+              }
+            },
+            "required": [
+              "barcode",
+              "card_product_token",
+              "card_token",
+              "channel",
+              "expiration",
+              "expiration_time",
+              "fulfillment_status",
+              "last_four",
+              "pan",
+              "pin_is_set",
+              "state",
+              "token",
+              "user_token"
+            ]
+          }
+        },
+        "end_index": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "is_more": {
+          "type": "boolean",
+          "default": false
+        },
+        "start_index": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  },
+  {
+    "name": "cardtransitions_getCardtransitionsToken",
+    "description": "Returns a card transition object",
+    "service": "cardtransitions",
+    "scope": "read",
+    "http": {
+      "method": "get",
+      "path": "/v3/cardtransitions/{token}",
+      "parameters": {
+        "path": {
+          "token": {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Card transition token"
+          }
+        },
+        "query": {
+          "fields": {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+          }
+        }
+      }
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Card transition token"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma-delimited list of fields to return (e.g. field_1,field_2,..). Leave blank to return all fields."
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "barcode": {
+          "type": "string"
+        },
+        "bulk_issuance_token": {
+          "type": "string"
+        },
+        "card": {
+          "type": "object",
+          "properties": {
+            "metadata": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "card_product_token": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 36
+        },
+        "card_token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "API",
+            "IVR",
+            "FRAUD",
+            "ADMIN",
+            "SYSTEM"
+          ]
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expedite": {
+          "type": "boolean",
+          "default": false
+        },
+        "expiration": {
+          "type": "string"
+        },
+        "expiration_time": {
+          "type": "string"
+        },
+        "fulfillment": {
+          "type": "object",
+          "properties": {
+            "card_fulfillment_reason": {
+              "type": "string",
+              "enum": [
+                "NEW",
+                "LOST_STOLEN",
+                "EXPIRED"
+              ]
+            },
+            "card_personalization": {
+              "type": "object",
+              "description": "Specifies personalized attributes to be added to the card.",
+              "properties": {
+                "carrier": {
+                  "type": "object"
+                },
+                "images": {
+                  "type": "object"
+                },
+                "perso_type": {
+                  "type": "string",
+                  "description": "Specifies the type of card personalization.",
+                  "enum": [
+                    "EMBOSS",
+                    "LASER",
+                    "FLAT"
+                  ]
+                },
+                "text": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            },
+            "shipping": {
+              "type": "object",
+              "properties": {
+                "care_of_line": {
+                  "type": "string",
+                  "description": "255 char max"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "LOCAL_MAIL",
+                    "LOCAL_MAIL_PACKAGE",
+                    "GROUND",
+                    "TWO_DAY",
+                    "OVERNIGHT",
+                    "INTERNATIONAL",
+                    "INTERNATIONAL_PRIORITY",
+                    "LOCAL_PRIORITY",
+                    "FEDEX_EXPEDITED",
+                    "FEDEX_REGULAR",
+                    "UPS_EXPEDITED",
+                    "UPS_REGULAR",
+                    "USPS_EXPEDITED",
+                    "USPS_REGULAR"
+                  ]
+                },
+                "recipient_address": {
+                  "type": "object"
+                },
+                "return_address": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "required": [
+            "card_personalization"
+          ]
+        },
+        "fulfillment_status": {
+          "type": "string",
+          "enum": [
+            "ISSUED",
+            "ORDERED",
+            "REJECTED",
+            "SHIPPED",
+            "DELIVERED",
+            "DIGITALLY_PRESENTED"
+          ]
+        },
+        "last_four": {
+          "type": "string"
+        },
+        "new_pan_from_card_token": {
+          "type": "string"
+        },
+        "pan": {
+          "type": "string"
+        },
+        "pin_is_set": {
+          "type": "boolean",
+          "default": false
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 255
+        },
+        "reason_code": {
+          "type": "string",
+          "enum": [
+            "00",
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "86"
+          ]
+        },
+        "reissue_pan_from_card_token": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "SUSPENDED",
+            "TERMINATED",
+            "UNACTIVATED"
+          ]
+        },
+        "token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "fulfillment.issued",
+            "state.activated",
+            "state.suspended",
+            "state.reinstated",
+            "state.terminated",
+            "state.limited",
+            "fulfillment.ordered",
+            "fulfillment.rejected",
+            "fulfillment.shipped",
+            "fulfillment.delivered",
+            "fulfillment.digitally_presented"
+          ]
+        },
+        "user": {
+          "type": "object",
+          "description": "Contains customer-provided information about the cardholder that performed the transaction.",
+          "properties": {
+            "metadata": {
+              "type": "object",
+              "description": "Associates customer-provided metadata with the cardholder.",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "user_token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "validations": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "object",
+              "properties": {
+                "birth_date": {
+                  "type": "boolean",
+                  "description": "yyyy-MM-dd",
+                  "default": false
+                },
+                "phone": {
+                  "type": "boolean",
+                  "description": "10 char max, phone number",
+                  "default": false
+                },
+                "random_name_line1_postfix": {
+                  "type": "boolean",
+                  "description": "Six-char random name postfix",
+                  "default": false
+                },
+                "ssn": {
+                  "type": "boolean",
+                  "description": "Last four digits of SSN",
+                  "default": false
+                }
+              },
+              "required": [
+                "birth_date",
+                "phone",
+                "random_name_line1_postfix",
+                "ssn"
+              ]
+            }
+          },
+          "required": [
+            "user"
+          ]
+        }
+      },
+      "required": [
+        "barcode",
+        "card_product_token",
+        "card_token",
+        "channel",
+        "expiration",
+        "expiration_time",
+        "fulfillment_status",
+        "last_four",
+        "pan",
+        "pin_is_set",
+        "state",
+        "token",
+        "user_token"
+      ]
+    }
+  },
+  {
     "name": "velocitycontrol_getVelocitycontrols",
     "description": "List velocity controls",
     "service": "velocitycontrol",
