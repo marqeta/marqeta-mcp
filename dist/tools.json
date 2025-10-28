@@ -486,7 +486,7 @@
   },
   {
     "name": "cardtransitions_postCardtransitions",
-    "description": "Creates a card transition object",
+    "description": "Creates a card transition object to update existing card state to activate, suspend or terminate",
     "service": "cardtransitions",
     "scope": "write",
     "http": {
@@ -928,8 +928,8 @@
     }
   },
   {
-    "name": "cardtransitions_getCardtransitionsCardToken",
-    "description": "Lists all card transitions",
+    "name": "cardtransitions_getCardtransitionsbyCardToken",
+    "description": "Lists all card transitions states",
     "service": "cardtransitions",
     "scope": "read",
     "http": {
@@ -1364,7 +1364,7 @@
     }
   },
   {
-    "name": "cardtransitions_getCardtransitionsToken",
+    "name": "cardtransitions_getCardtransitionsbyToken",
     "description": "Returns a card transition object",
     "service": "cardtransitions",
     "scope": "read",
@@ -1726,7 +1726,7 @@
   },
   {
     "name": "velocitycontrol_getVelocitycontrols",
-    "description": "List velocity controls",
+    "description": "Retrieves a list of all the velocity controls associated with a specific user or card product",
     "service": "velocitycontrol",
     "scope": "read",
     "http": {
@@ -1885,7 +1885,7 @@
   },
   {
     "name": "velocitycontrol_postVelocitycontrols",
-    "description": "Create velocity control",
+    "description": "Create velocity control to set limits how much and how frequently a user can spend funds",
     "service": "velocitycontrol",
     "scope": "write",
     "http": {
@@ -1954,7 +1954,7 @@
     }
   },
   {
-    "name": "velocitycontrol_getVelocitycontrolsAccountAccountTokenAvailable",
+    "name": "velocitycontrol_getVelocitycontrolsbyAccountToken",
     "description": "Retrieve velocity control available balances for an account token",
     "service": "velocitycontrol",
     "scope": "read",
@@ -2032,8 +2032,8 @@
     }
   },
   {
-    "name": "velocitycontrol_getVelocitycontrolsUserUsertokenAvailable",
-    "description": "List user velocity control balances",
+    "name": "velocitycontrol_getVelocitycontrolsbyUserToken",
+    "description": "Retrieves a list of the available balances of the velocity controls associated with a user",
     "service": "velocitycontrol",
     "scope": "read",
     "http": {
@@ -2174,7 +2174,7 @@
     }
   },
   {
-    "name": "velocitycontrol_getVelocitycontrolsToken",
+    "name": "velocitycontrol_getVelocitycontrolsbyToken",
     "description": "Returns a specific velocity control",
     "service": "velocitycontrol",
     "scope": "read",
@@ -2256,8 +2256,8 @@
     }
   },
   {
-    "name": "velocitycontrol_putVelocitycontrolsToken",
-    "description": "Update velocity control",
+    "name": "velocitycontrol_putVelocitycontrolsbyToken",
+    "description": "Updates a specific velocity control",
     "service": "velocitycontrol",
     "scope": "write",
     "http": {
@@ -2548,8 +2548,8 @@
     }
   },
   {
-    "name": "users_getUsersAuthClientaccesstokenToken",
-    "description": "Retrieve client access token",
+    "name": "users_getUsersAuthbyClientAccessToken",
+    "description": "Retrieve application and card information using a client access token",
     "service": "users",
     "scope": "read",
     "http": {
@@ -2615,7 +2615,7 @@
     }
   },
   {
-    "name": "users_getUsersPhonenumberPhonenumber",
+    "name": "users_getUsersbyPhonenumber",
     "description": "Lists all users who match a phone number",
     "service": "users",
     "scope": "read",
@@ -2766,8 +2766,8 @@
     }
   },
   {
-    "name": "users_getUsersParenttokenChildren",
-    "description": "List user child accounts",
+    "name": "users_getChildrenUsersbyParenttoken",
+    "description": "List user child accounts of a parent user or business",
     "service": "users",
     "scope": "read",
     "http": {
@@ -2917,7 +2917,7 @@
     }
   },
   {
-    "name": "users_getUsersToken",
+    "name": "users_getUsersbyToken",
     "description": "Retrieve user",
     "service": "users",
     "scope": "read",
@@ -2999,7 +2999,7 @@
     }
   },
   {
-    "name": "users_getUsersTokenNotes",
+    "name": "users_getUsersNotesbyToken",
     "description": "Lists cardholder notes",
     "service": "users",
     "scope": "read",
@@ -3186,7 +3186,7 @@
     }
   },
   {
-    "name": "users_getUsersTokenSsn",
+    "name": "users_getUsersSSNbyToken",
     "description": "Retrieve user identification number",
     "service": "users",
     "scope": "read",
@@ -3553,8 +3553,8 @@
     }
   },
   {
-    "name": "transactions_getTransactionsFundingsourceFundingsourcetoken",
-    "description": "List transactions for a funding account",
+    "name": "transactions_getTransactionsbyFundingsourcetoken",
+    "description": "List transactions for a specific funding source",
     "service": "transactions",
     "scope": "read",
     "http": {
@@ -3809,7 +3809,7 @@
     }
   },
   {
-    "name": "transactions_getTransactionsToken",
+    "name": "transactions_getTransactionsbyToken",
     "description": "Retrieve transaction",
     "service": "transactions",
     "scope": "read",
@@ -3920,8 +3920,8 @@
     }
   },
   {
-    "name": "transactions_getTransactionsTokenRelated",
-    "description": "List related transactions",
+    "name": "transactions_getRelatedTransactionsbyToken",
+    "description": "List all transactions related to the specified transaction",
     "service": "transactions",
     "scope": "read",
     "http": {
@@ -4400,7 +4400,7 @@
     }
   },
   {
-    "name": "cards_getCardsBarcodeBarcode",
+    "name": "cards_getCardsbyBarcode",
     "description": "Returns a card's metadata",
     "service": "cards",
     "scope": "read",
@@ -4476,7 +4476,7 @@
     }
   },
   {
-    "name": "cards_postCardsGetbypan",
+    "name": "cards_postCardsbyPan",
     "description": "Returns user and card tokens for the specified PAN",
     "service": "cards",
     "scope": "write",
@@ -4514,7 +4514,7 @@
     }
   },
   {
-    "name": "cards_getCardsUserToken",
+    "name": "cards_getCardsbyUserToken",
     "description": "Lists all cards for a specific user",
     "service": "cards",
     "scope": "read",
@@ -4659,7 +4659,7 @@
     }
   },
   {
-    "name": "cards_getCardsToken",
+    "name": "cards_getCardsbyToken",
     "description": "Returns a specific card",
     "service": "cards",
     "scope": "read",
@@ -4818,7 +4818,7 @@
     }
   },
   {
-    "name": "cards_getCardsTokenShowpan",
+    "name": "cards_getCardsbyTokenandShowpan",
     "description": "Returns a specific card - PAN visible",
     "service": "cards",
     "scope": "read",
@@ -5016,7 +5016,7 @@
     }
   },
   {
-    "name": "cardproducts_getCardproductsToken",
+    "name": "cardproducts_getCardproductsbyToken",
     "description": "Returns a specific card product",
     "service": "cardproducts",
     "scope": "read",
