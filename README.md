@@ -65,27 +65,27 @@ The MCP server provides **33 tools** across 7 service categories. User service a
 | Tool Name | Scope | Description |
 |-----------|-------|-------------|
 | `cardproducts_getCardproducts` | Read | Lists all card products |
-| `cardproducts_getCardproductsToken` | Read | Returns a specific card product |
+| `cardproducts_getCardproductsbyToken` | Read | Returns a specific card product |
 
 ### Card Transitions Tools
 
 | Tool Name | Scope | Description |
 |-----------|-------|-------------|
-| `cardtransitions_getCardtransitionsCardToken` | Read | Lists all card transitions |
-| `cardtransitions_getCardtransitionsToken` | Read | Returns a card transition object |
-| `cardtransitions_postCardtransitions` | Write | Creates a card transition object |
+| `cardtransitions_getCardtransitionsbyCardToken` | Read | Lists all card transitions states |
+| `cardtransitions_getCardtransitionsbyToken` | Read | Returns a card transition object |
+| `cardtransitions_postCardtransitions` | Write | Creates a card transition object to update existing card state to activate, suspend or terminate |
 
 ### Cards Tools
 
 | Tool Name | Scope | Description |
 |-----------|-------|-------------|
 | `cards_getCards` | Read | Lists cards by the last 4 digits |
-| `cards_getCardsBarcodeBarcode` | Read | Returns a card's metadata |
-| `cards_getCardsToken` | Read | Returns a specific card |
-| `cards_getCardsTokenShowpan` | Read | Returns a specific card - PAN visible |
-| `cards_getCardsUserToken` | Read | Lists all cards for a specific user |
+| `cards_getCardsbyBarcode` | Read | Returns a card's metadata |
+| `cards_getCardsbyToken` | Read | Returns a specific card |
+| `cards_getCardsbyTokenandShowpan` | Read | Returns a specific card - PAN visible |
+| `cards_getCardsbyUserToken` | Read | Lists all cards for a specific user |
 | `cards_postCards` | Write | Creates a card |
-| `cards_postCardsGetbypan` | Write | Returns user and card tokens for the specified PAN |
+| `cards_postCardsbyPan` | Write | Returns user and card tokens for the specified PAN |
 | `cards_putCardsToken` | Write | Updates a specific card |
 
 ### Disputes Tools
@@ -100,33 +100,33 @@ The MCP server provides **33 tools** across 7 service categories. User service a
 | Tool Name | Scope | Description |
 |-----------|-------|-------------|
 | `transactions_getTransactions` | Read | List transactions |
-| `transactions_getTransactionsFundingsourceFundingsourcetoken` | Read | List transactions for a funding account |
-| `transactions_getTransactionsToken` | Read | Retrieve transaction |
-| `transactions_getTransactionsTokenRelated` | Read | List related transactions |
+| `transactions_getTransactionsbyFundingsourcetoken` | Read | List transactions for a specific funding source |
+| `transactions_getTransactionsbyToken` | Read | Retrieve transaction |
+| `transactions_getRelatedTransactionsbyToken` | Read | List all transactions related to the specified transaction |
 
 ### Users Tools
 
 | Tool Name | Scope | Description |
 |-----------|-------|-------------|
 | `users_getUsers` | Read | List users |
-| `users_getUsersAuthClientaccesstokenToken` | Read | Retrieve client access token |
-| `users_getUsersParenttokenChildren` | Read | List user child accounts |
-| `users_getUsersPhonenumberPhonenumber` | Read | Lists all users who match a phone number |
-| `users_getUsersToken` | Read | Retrieve user |
-| `users_getUsersTokenNotes` | Read | Lists cardholder notes |
-| `users_getUsersTokenSsn` | Read | Retrieve user identification number |
+| `users_getUsersAuthbyClientAccessToken` | Read | Retrieve application and card information using a client access token |
+| `users_getChildrenUsersbyParenttoken` | Read | List user child accounts of a parent user or business |
+| `users_getUsersbyPhonenumber` | Read | Lists all users who match a phone number |
+| `users_getUsersbyToken` | Read | Retrieve user |
+| `users_getUsersNotesbyToken` | Read | Lists cardholder notes |
+| `users_getUsersSSNbyToken` | Read | Retrieve user identification number |
 
 ### Velocity Control Tools
 
 | Tool Name | Scope | Description |
 |-----------|-------|-------------|
-| `velocitycontrol_getVelocitycontrols` | Read | List velocity controls |
-| `velocitycontrol_getVelocitycontrolsAccountAccountTokenAvailable` | Read | Retrieve velocity control available balances for an account token |
-| `velocitycontrol_getVelocitycontrolsToken` | Read | Returns a specific velocity control |
-| `velocitycontrol_getVelocitycontrolsUserUsertokenAvailable` | Read | List user velocity control balances |
+| `velocitycontrol_getVelocitycontrols` | Read | Retrieves a list of all the velocity controls associated with a specific user or card product |
+| `velocitycontrol_getVelocitycontrolsbyAccountToken` | Read | Retrieve velocity control available balances for an account token |
+| `velocitycontrol_getVelocitycontrolsbyToken` | Read | Returns a specific velocity control |
+| `velocitycontrol_getVelocitycontrolsbyUserToken` | Read | Retrieves a list of the available balances of the velocity controls associated with a user |
 | `velocitycontrol_deleteVelocitycontrolsToken` | Write | Sets a specific velocity control to inactive to soft delete it |
-| `velocitycontrol_postVelocitycontrols` | Write | Create velocity control |
-| `velocitycontrol_putVelocitycontrolsToken` | Write | Update velocity control |
+| `velocitycontrol_postVelocitycontrols` | Write | Create velocity control to set limits how much and how frequently a user can spend funds |
+| `velocitycontrol_putVelocitycontrolsbyToken` | Write | Updates a specific velocity control |
 
 ### Filtering Tools
 
